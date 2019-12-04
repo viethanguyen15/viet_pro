@@ -1,5 +1,6 @@
  <!--	Latest Product	-->
 <?php
+     $prd_id = isset($_GET['prd_id']) ? $_GET['prd_id'] : '';
     $sql = "SELECT * FROM product ORDER BY prd_id DESC LIMIT 6";
     $query = mysqli_query($conn, $sql);
 ?> 
@@ -9,8 +10,8 @@
                         <?php while($row = mysqli_fetch_assoc($query)){ ?>
                         <div class="col-lg-4 col-md-6 col-sm-12 mx-product">
                             <div class="product-item card text-center">
-                                <a href="#"><img src="admin/products/<?php echo $row['prd_image']; ?>"></a>
-                                <h4><a href="#"><?php echo $row['prd_name'] ?></a></h4>
+                                <a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id']; ?>"><img src="admin/products/<?php echo $row['prd_image']; ?>"></a>
+                                <h4><a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id']; ?>"><?php echo $row['prd_name'] ?></a></h4>
                                 <p>Giá Bán: <span><?php echo $row['prd_price']; ?></span></p>
                             </div>
                         </div>

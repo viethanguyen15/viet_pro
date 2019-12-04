@@ -57,12 +57,16 @@
 	?>
 	<?php
 		if(isset($_POST['submit'])){
-			$name_acount = $_POST['name'];
-			$pass = $_POST['pass'];
+			$name_acount = addslashes($_POST['name']);
+			$pass = addslashes($_POST['pass']);
 			$sql = "SELECT * FROM user WHERE user_full = '$name_acount' AND user_pass = '$pass'";
 			$query_login = mysqli_query($conn, $sql);
 			$num_rows = mysqli_num_rows($query_login);
 			if($num_rows > 0){
+				if(isset($_POST['remember'])){
+					setcookie('name_acount', $name_acount, time()+60);
+					setcookie('user_pass', $pass, time()+60);
+				}
 				$_SESSION['name'] = $name_acount;
 				$_SESSION['pass'] = $pass;
 				header('location: index.php');
@@ -85,10 +89,10 @@
 					<form role="form" method="post">
 						<fieldset>
 							<div class="form-group">
-								<input class="form-control" placeholder=" your name" name="name" type="text" autofocus>
+								<input class="form-control" placeholder=" your name" name="name" autofocus type="text" value=<?php if(isset($_COOKIE['name_acount'])){echo $_COOKIE['name_acount'];}else{echo '';} ?> >
 							</div>
 							<div class="form-group">
-								<input class="form-control" placeholder="Mật khẩu" name="pass" type="password" value="">
+								<input class="form-control" placeholder="Mật khẩu" name="pass" type="password" value=<?php if(isset($_COOKIE['user_pass'])){echo $_COOKIE['user_pass'];}else{echo '';} ?>>
 							</div>
 							<div class="checkbox">
 								<label>

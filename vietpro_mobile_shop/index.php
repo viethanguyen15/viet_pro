@@ -1,4 +1,6 @@
 <?php
+    ob_start();
+    session_start();
     define('SECURITYAD', true);
     include_once('config/connecttion.php');
 ?>

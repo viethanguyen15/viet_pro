@@ -1,18 +1,49 @@
                 <?php
-                    $prd_id = $_GET['prd_id'];
-                    $sql = "SELECT * FROM product WHERE prd_id = $prd_id";
+                    $prd_id = isset($_GET['prd_id']) ? $_GET['prd_id'] : '';
+                    $sql = "SELECT * FROM product WHERE prd_id = '$prd_id'";
                     $query = mysqli_query($conn, $sql);
-
+                    $row = mysqli_fetch_assoc($query);
+                    if(isset($_GET['page'])){
+                        $page = $_GET['page'];
+                    }
+                    else{
+                        $page = 1;
+                    }
+                    $record_per_page = 3;
+                    $offset = $page * $record_per_page - $record_per_page;
+                    $sql_se_comm = "SELECT * FROM comment WHERE prd_id = '$prd_id'";
+                    $query_se_comm = mysqli_query($conn, $sql_se_comm);
+                    $num_row = mysqli_num_rows($query_se_comm);
+                    $total_page = ceil($num_row / $record_per_page);
+                    $list_page = "";
+                    $page_prev = $page - 1;
+                    if($page_prev <= 0){
+                        $page_prev = 1;
+                    }
+                    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=product&prd_id='.$prd_id.'&page='.$page_prev.'">Trang trước</a></li>';
+                    for($p = 1; $p <= $total_page; $p++){
+                        if($p == $page){
+                            $active = 'active';
+                        }
+                        else{
+                            $active = '';
+                        }
+                        $list_page .= '<li class="page-item '.$active.'"><a class="page-link" href="index.php?page_layout=product&prd_id='.$prd_id.'&page='.$p.'">'.$p.'</a></li>';
+                    }
+                    $page_next = $page + 1;
+                    if($page_next > $total_page){
+                        $page_next = $total_page;
+                    } 
+                    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=product&prd_id='.$prd_id.'&page='.$page_next.'">trang sau</a></li>';
                 ?>
                 <!--	List Product	-->
                 <div id="product">
-                	<div id="product-head" class="row">
+                	<div id="product-head" class="row"> 
                     	<div id="product-img" class="col-lg-6 col-md-6 col-sm-12">
-                        	<img src="images/product-1.png">
+                        	<img src="admin/products/<?php echo $row['prd_image']; ?>">
                         </div>
                                 
                         <div id="product-details" class="col-lg-6 col-md-6 col-sm-12">
-                            <?php while($row = mysqli_fetch_assoc($query)) { ?> 
                         	<h1><?php echo $row['prd_name']; ?></h1>
                             <ul>
                             	<li><span>Bảo hành:</span> <?php echo $row['prd_warranty']; ?></li>
@@ -25,34 +56,29 @@
                                     <?php if($row['prd_status']== 1){echo "Còn hàng";}else{echo "Hết hàng";} ?>
                                 </li>
                             </ul>
-                            <?php } ?>
-                            <div id="add-cart"><a href="#">Mua ngay</a></div>
+                            <div id="add-cart"><a href="modules/cart/add_cart.php?prd_id=<?php echo $row['prd_id']; ?>">Mua ngay</a></div>
                         </div>
                     </div>
                     <div id="product-body" class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h3>Đánh giá về iPhone X 64GB</h3>
+                            <h3>Đánh giá về <?php echo $row['prd_name']; ?></h3>
                             <p>
-                                Màn hình OLED có hỗ trợ HDR là một sự nâng cấp mới của Apple thay vì màn hình LCD với IPS được tìm thấy trên iPhone 8 và iPhone 8 Plus đem đến tỉ lệ tương phản cao hơn đáng kể là 1.000.000: 1, so với 1.300: 1 ( iPhone 8 Plus ) và 1.400: 1 ( iPhone 8 ).
-                            </p>
-                            <p>
-                                Màn hình OLED mà Apple đang gọi màn hình Super Retina HD có thể hiển thị tông màu đen sâu hơn. Điều này được thực hiện bằng cách tắt các điểm ảnh được hiển thị màu đen còn màn hình LCD thông thường, những điểm ảnh đó được giữ lại. Không những thế, màn hình OLED có thể tiết kiệm pin đáng kể.
-                            </p>
-                            <p>
-                                Cả ba mẫu iPhone mới đều có camera sau 12MP và 7MP cho camera trước, nhưng chỉ iPhone X và iPhone 8 Plus có thêm một cảm biến cho camera sau. Camera kép trên máy như thường lệ: một góc rộng và một tele. Vậy Apple đã tích hợp những gì vào camera của iPhone X?
-                            </p>
-                            <p>
-                                Chống rung quang học (OIS) là một trong những tính năng được nhiều hãng điện thoại trên thế giới áp dụng. Đối với iPhone X, hãng tích hợp chống rung này cho cả hai camera, không như IPhone 8 Plus chỉ có OIS trên camera góc rộng nên camera tele vẫn rung và chất lượng bức hình không đảm bảo.
-                            </p>
-                            <p>
-                                Thứ hai, ống kính tele của iPhone 8 Plus có khẩu độ f / 2.8, trong khi iPhone X có ống kính tele f / 2.2, tạo ra một đường cong nhẹ và có thể chụp thiếu sáng tốt hơn với ống kính tele trên iPhone X.
-                            </p>
-                            <p>
-                                Portrait Mode là tính năng chụp ảnh xóa phông trước đây chỉ có với camera sau của iPhone 7 Plus, hiện được tích hợp trên cả iPhone 8 Plus và iPhone X. Tuy nhiên, nhờ sức mạnh của cảm biến trên mặt trước của iPhone X, Camera TrueDepth cũng có thể chụp với Potrait mode.
+                                <?php echo $row['prd_details']; ?> 
                             </p>
                         </div>
                     </div>
-                    
+                    <?php
+                        date_default_timezone_set('Asia/Ho_Chi_Minh');
+                        if(isset($_POST['sbm'])){
+                            $comm_name = $_POST['comm_name'];
+                            $comm_mail  =$_POST['comm_mail'];
+                            $comm_details = $_POST['comm_details'];
+                            $comm_date = date("Y-m-d H:i:s");
+                            $sql_insert_comm = "INSERT INTO comment (prd_id, comm_name, comm_mail, comm_date, comm_details)
+                                                VALUES ('$prd_id','$comm_name', '$comm_mail', '$comm_date', '$comm_details')";
+                            $query_insert_comm = mysqli_query($conn, $sql_insert_comm);                    
+                        }
+                    ?>
                     <!--	Comment	-->
                     <div id="comment" class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -76,8 +102,8 @@
                     </div>
                     <!--	End Comment	-->  
                     <!-- <?php
-                        //$sql = "SELECT * FROM comment WHERE prd_id = '$prd_id' ORDER BY comm_id DESC";
-                        //$query = mysqli_query($conn, $sql);
+                        $sql = "SELECT * FROM comment WHERE prd_id = '$prd_id' ORDER BY comm_id DESC LIMIT $offset, $record_per_page";
+                        $query = mysqli_query($conn, $sql);
                     ?> -->
                     <!--	Comments List	-->
                     <div id="comments-list" class="row">
@@ -85,7 +111,6 @@
                             <div class="comment-item">
                             
                             <?php
-                            echo $sql;
                                 while($row = mysqli_fetch_assoc($query)){
                             ?>
                                 <ul>
@@ -102,4 +127,8 @@
                     <!--	End Comments List	-->
                 </div>
                 <!--	End Product	--> 
-                
+                <div id="pagination">
+                    <ul class="pagination">
+                        <?php echo $list_page; ?>
+                    </ul> 
+                </div>

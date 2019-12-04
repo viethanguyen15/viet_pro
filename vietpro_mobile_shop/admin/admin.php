@@ -61,10 +61,12 @@
 			<li class="<?php if($_GET['page_layout'] == "user") { echo 'active'; } ?>"><a href="index.php?page_layout=user"><svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>Quản lý thành viên</a></li>
 			<li class="<?php if($_GET['page_layout'] == "category") { echo 'active'; } ?>"><a href="index.php?page_layout=category"><svg class="glyph stroked open folder"><use xlink:href="#stroked-open-folder"/></svg>Quản lý danh mục</a></li>
 			<li class="<?php if($_GET['page_layout'] == "product") { echo 'active'; } ?>"><a href="index.php?page_layout=product"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý sản phẩm</a></li>
+			<li class="<?php if($_GET['page_layout'] == "comment") { echo 'active';} ?>"><a href="index.php?page_layout=comment"><svg class="glyph stroked two messages"><use xlink:href="#stroked-two-messages"/></svg>Quản lý bình luận</a></li>
+			<li class="<?php if($_GET['page_layout'] == "slideshow") { echo 'active';} ?>"><a href="index.php?page_layout=slideshow"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg>Quản lý slideshow</a></li>
+			<li class="<?php if($_GET['page_layout'] == "banner") { echo 'active';} ?>"><a href="index.php?page_layout=banner"><svg class="glyph stroked notepad "><use xlink:href="#stroked-notepad"/></svg>Quản lý banner</a></li>
 		</ul>
 
 	</div><!--/.sidebar-->
-
 	<?php
 		if(isset($_GET['page_layout'])){
 			$page = $_GET['page_layout'];
@@ -78,6 +80,15 @@
 				case 'product': include_once('product.php'); break;
 				case 'add_product': include_once('add_product.php'); break;
 				case 'edit_product': include_once('edit_product.php'); break;
+				case 'comment': include_once('comment.php'); break;
+				case 'add_comment': include_once('add_comment.php'); break;
+				case 'edit_comment': include_once('edit_comment.php'); break;
+				case 'slideshow': include_once('slideshow.php'); break;
+				case 'add_slideshow': include_once('add_slideshow.php'); break;
+				case 'edit_slideshow': include_once('edit_slideshow.php'); break;
+				case 'banner': include_once('banner.php'); break;
+				case 'add_banner': include_once('add_banner.php'); break;
+				case 'edit_banner': include_once('edit_banner.php'); break;
 			}
 		}
 		else{
