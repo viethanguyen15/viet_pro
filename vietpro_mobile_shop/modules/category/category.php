@@ -61,7 +61,21 @@
                     ?>
                         <div class="col-lg-4 col-md-6 col-sm-12 mx-product">
                             <div class="product-item card text-center">
-                                <a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id']; ?>"><img src="admin/products/<?php echo $row['prd_image']; ?>"></a>
+                                <a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id']; ?>">
+                                    <img src="admin/products/<?php echo $row['prd_image']; ?>" data-toggle="tooltip" data-html="true" 
+                                         title="<div class='text-light text-center'>
+                                                    <h3><?php echo $row['prd_name']; ?></h3>
+                                                    <span class='text-danger'>Tình trạng</span>: <?php echo $row['prd_new'] ?><br/>
+                                                    <span class='text-danger'>Bảo hành</span>: <?php echo $row['prd_warranty']; ?><br/>
+                                                    <span class='text-danger'>Phụ kiện</span>: <?php echo $row['prd_accessories']; ?><br/>
+                                                    <span class='text-danger'>Khuyến mãi</span>: <?php echo $row['prd_promotion']; ?><br/>
+                                                    <span class='text-danger'>Giá bán(chưa bao gồm VAT)</span>: <?php echo $row['prd_price']; ?><br/> 
+                                                </div>
+                                                <div id='status' class='<?php if($row['prd_status'] == 1){echo 'text-success';}else{echo 'text-warning';} ?>'>
+                                                    <?php if($row['prd_status'] == 1){echo 'Còn hàng';}else{echo 'Hết hàng';} ?>
+                                                </div>
+                                                ">
+                                </a>
                                 <h4><a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id']; ?>"><?php echo $row['prd_name']; ?></a></h4>
                                 <p>Giá Bán: <span><?php echo $row['prd_price']; ?></span></p>
                             </div>
@@ -74,8 +88,14 @@
                 <div id="pagination">
                     <ul class="pagination">
                        <?php echo $list_page; ?>
-                    </ul> 
+                    </ul>
                 </div>
+                <script>
+                    $(document).ready(function(){
+                        $('[data-toggle="tooltip"]').tooltip();
+                    });
+                </script>
+
                 
             
             

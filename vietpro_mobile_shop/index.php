@@ -17,8 +17,10 @@
 <link rel="stylesheet" href="css/product.css">
 <link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="css/success.css">
+<script src="js/popper.min.js"></script>
 <script src="js/jquery-3.3.1.js"></script>
 <script src="js/bootstrap.js"></script>
+
 </head>
 <body>
 
